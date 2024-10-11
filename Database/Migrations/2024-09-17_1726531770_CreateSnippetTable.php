@@ -6,10 +6,10 @@ use Database\SchemaMigration;
 
 class CreateSnippetTable implements SchemaMigration
 {
-    public function up(): array
-    {
-        return [
-            "CREATE TABLE IF NOT EXISTS snippets (
+  public function up(): array
+  {
+    return [
+      "CREATE TABLE IF NOT EXISTS snippets (
                 id INT PRIMARY KEY AUTO_INCREMENT,
                 title VARCHAR(255),
                 body TEXT,
@@ -19,13 +19,13 @@ class CreateSnippetTable implements SchemaMigration
                 created_at DATETIME,
                 updated_at DATETIME
             );"
-        ];
-    }
+    ];
+  }
 
-    public function down(): array
-    {
-        return [
-            "DROP TABLE IF EXISTS snippets;"
-        ];
-    }
+  public function down(): array
+  {
+    return [
+      "DROP TABLE IF EXISTS snippets;"
+    ];
+  }
 }
