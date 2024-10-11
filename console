@@ -1,0 +1,29 @@
+<?php
+spl_autoload_extensions(".php");
+spl_autoload_register();
+
+// ファイル名に .php の拡張子を付けていないのは意図的なもの
+
+$commands = include "Commands/registry.php";
+
+// 第2引数は実行するコマンド
+$inputCommand = $argv[1];
+
+// PHPでインスタンス化できるすべてのコマンドクラス名を通過します
+// (一致したクラスのインスタンスを作成してexecuteメソッドを実行する)
+foreach ($commands as $commandClass) {
+    $alias = $commandClass::getAlias();
+
+    if ($inputCommand === $alias) {
+        if (in_array('--help', $argv)) {
+            fwrite(STDOUT, $commandClass::getHelp());
+            exit(0);
+        } else {
+            $command = new $commandClass();
+            $result = $command->execute();
+            exit($result);
+        }
+    }
+}
+
+fwrite(STDOUT, "Failed to run any commands\n");
