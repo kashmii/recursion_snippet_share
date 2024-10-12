@@ -90,4 +90,15 @@ class Snippet implements Model
   {
     $this->timeStamp = $timeStamp;
   }
+
+  public static function validateExpirationInput($expiration): bool
+  {
+    if ($expiration === '') {
+      return true;
+    }
+    // 許可する例: 1day, 2days, 1hour, 3hours, 1minute, 30seconds, 2weeks, 3months
+    $pattern = '/^\d+\s*(day|days|hour|hours|minute|minutes|second|seconds|week|weeks|month|months)$/i';
+
+    return preg_match($pattern, $expiration);
+  }
 }

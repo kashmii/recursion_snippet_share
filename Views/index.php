@@ -11,7 +11,6 @@
   <label for="language">Language:</label>
   <input type="text" id="language" name="language" required>
 
-  <!-- 文字を時間に変換する処理が必要 -->
   <label for="expiration">Expiration:</label>
   <select id="expiration" name="expiration">
     <option value="">設定しない</option>
