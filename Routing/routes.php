@@ -1,11 +1,11 @@
 <?php
 
+require __DIR__ . '/../config.php';
+
 // use Helpers\ValidationHelper;
 use Response\HTTPRenderer;
 use Response\Render\HTMLRenderer;
 use Controllers\SnippetController;
-
-
 
 return [
   '/' => function (): HTTPRenderer {
@@ -25,7 +25,7 @@ return [
     return new HTMLRenderer('index');
   },
   // show のルーティング
-  '/([a-zA-Z0-9]{13,})' => function ($token): HTTPRenderer {
+  SHOW_ROUTE_PATTERN => function ($token): HTTPRenderer {
     // $controller = new SnippetController();
     // $controller->show($token);
     return new HTMLRenderer('show');
