@@ -96,8 +96,10 @@ class Snippet implements Model
     if ($expiration === '') {
       return true;
     }
-    // 許可する例: 1day, 2days, 1hour, 3hours, 1minute, 30seconds, 2weeks, 3months
-    $pattern = '/^\d+\s*(day|days|hour|hours|minute|minutes|second|seconds|week|weeks|month|months)$/i';
+    // 許可する例: 1day, 2days, 1hour, 3hours, 1minute, 30seconds, 2weeks
+    //   1-3桁の数字 + 単位の文字列
+    //   （最大値は 999 weeks。長期すぎる値は許可しない方針）
+    $pattern = '/^\d{1,3}\s*(day|days|hour|hours|minute|minutes|second|seconds|week|weeks)$/i';
 
     return preg_match($pattern, $expiration);
   }
