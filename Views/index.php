@@ -12,13 +12,15 @@
   <input type="text" id="language" name="language" required>
 
   <!-- 文字を時間に変換する処理が必要 -->
-  <!-- <label for="expiration">Expiration (optional):</label>
+  <label for="expiration">Expiration:</label>
   <select id="expiration" name="expiration">
-    <option value="10m">10 分</option>
-    <option value="1h">1 時間</option>
-    <option value="1d">1 日</option>
-    <option value="forever">永続</option>
-  </select> -->
+    <option value="">設定しない</option>
+    <option value="30seconds">30 秒</option> <!-- 開発用 -->
+    <option value="10minutes">10 分</option>
+    <option value="1hour">1 時間</option>
+    <option value="1day">1 日</option>
+    <option value="3days">3 日</option>
+  </select>
 
   <button type="submit">作成</button>
 </form>
