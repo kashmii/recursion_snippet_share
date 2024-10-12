@@ -43,7 +43,7 @@ class SnippetController
     $language = $_POST['language'];
     $expirationDateTime = $_POST['expiration'] == "" ?
       null : $this->convertExpirationToDateTime($_POST['expiration']);
-    $token = $this->generateUniquePath();
+    $token = $this->generateUniquePath($body);
 
     $snippet = new Snippet($title, $body, $token, $language, null, $expirationDateTime);
     $success = $this->saveToDatabase($snippet);
@@ -81,9 +81,9 @@ class SnippetController
     return $success;
   }
 
-  private function generateUniquePath(): string
+  private function generateUniquePath($string): string
   {
-    $token = uniqid('', false);
+    $token = hash('md5', $string);
     return $token;
   }
 
