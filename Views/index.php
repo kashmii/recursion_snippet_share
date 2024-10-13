@@ -20,6 +20,15 @@ $languageOptions = [
   'xml',
   'yaml',
 ];
+
+$expirationOptions = [
+  "設定しない" => "",
+  "30 秒" => "30seconds", // 開発用
+  "10 分" => "10minutes",
+  "1 時間" => "1hour",
+  "1 日" => "1day",
+  "3 日" => "3days"
+];
 ?>
 
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.32.1/min/vs/loader.js"></script>
@@ -52,12 +61,9 @@ $languageOptions = [
           <label for="expiration" class="lower-label">有効期限:</label>
         </div>
         <select id="expiration" name="expiration">
-          <option value="">設定しない</option>
-          <option value="30seconds">30 秒</option> <!-- 開発用 -->
-          <option value="10minutes">10 分</option>
-          <option value="1hour">1 時間</option>
-          <option value="1day">1 日</option>
-          <option value="3days">3 日</option>
+          <?php foreach ($expirationOptions as $text => $value) : ?>
+            <option value="<?= htmlspecialchars($value, ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($text, ENT_QUOTES, 'UTF-8') ?></option>
+          <?php endforeach; ?>
         </select>
       </div>
 
