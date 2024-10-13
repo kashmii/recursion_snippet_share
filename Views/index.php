@@ -1,3 +1,24 @@
+<?php
+
+$languageOptions = [
+  'css',
+  'dockerfile',
+  'html',
+  'java',
+  'javascript',
+  'json',
+  'markdown',
+  'php',
+  'python',
+  'ruby',
+  'shell',
+  'sql',
+  'typescript',
+  'xml',
+  'yaml',
+];
+?>
+
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.32.1/min/vs/loader.js"></script>
 
 <h1>Code Sharing</h1>
@@ -5,10 +26,10 @@
 <form id="codeForm" method="post" action="/submit">
   <label for="languageSelect">Choose a programming language: </label>
   <select id="languageSelect" name="language">
-    <option value="plaintext">Plain Text</option>
-    <option value="php">PHP</option>
-    <option value="javascript">JavaScript</option>
-    <!-- Add more languages if needed -->
+    <option value="plaintext" selected>Plain Text</option>
+    <?php foreach ($languageOptions as $language) : ?>
+      <option value="<?= htmlspecialchars($language) ?>"><?= htmlspecialchars($language) ?></option>
+    <?php endforeach; ?>
   </select>
 
   <div id="editor" style="width:800px;height:600px;border:1px solid grey;"></div>
