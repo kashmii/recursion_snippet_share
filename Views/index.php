@@ -1,17 +1,42 @@
-<!-- views/create.php -->
-<h1>Snippet作成 index</h1>
+<?php
 
-<form method="post" action="/submit">
+$languageOptions = [
+  'css',
+  'dockerfile',
+  'html',
+  'java',
+  'javascript',
+  'json',
+  'markdown',
+  'php',
+  'python',
+  'ruby',
+  'shell',
+  'sql',
+  'typescript',
+  'xml',
+  'yaml',
+];
+?>
+
+<script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.32.1/min/vs/loader.js"></script>
+
+<form id="codeForm" method="post" action="/submit">
+  <label for="languageSelect">Choose a programming language: </label>
+  <select id="languageSelect" name="language">
+    <option value="plaintext" selected>Plain Text</option>
+    <?php foreach ($languageOptions as $language) : ?>
+      <option value="<?= htmlspecialchars($language) ?>"><?= htmlspecialchars($language) ?></option>
+    <?php endforeach; ?>
+  </select>
+
+  <div id="editor" style="width:800px;height:600px;border:1px solid grey;"></div>
+  <input type="hidden" id="body" name="body">
+
   <label for="title">Title:</label>
   <input type="text" id="title" name="title" required>
 
-  <label for="body">Body:</label>
-  <textarea id="body" name="body" required></textarea>
-
-  <label for="language">Language:</label>
-  <input type="text" id="language" name="language" required>
-
-  <label for="expiration">Expiration:</label>
+  <label for="expiration">有効期限:</label>
   <select id="expiration" name="expiration">
     <option value="">設定しない</option>
     <option value="30seconds">30 秒</option> <!-- 開発用 -->
@@ -22,4 +47,37 @@
   </select>
 
   <button type="submit">作成</button>
+
+  <script>
+    require.config({
+      paths: {
+        'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.32.1/min/vs'
+      }
+    });
+
+    let editorInstance;
+
+    require(['vs/editor/editor.main'], function() {
+      editorInstance = monaco.editor.create(document.getElementById('editor'), {
+        value: "// Type your code here...",
+        language: 'plaintext', // Choose the language syntax you need
+        theme: 'vs-light' // Set a theme, can be 'vs-light', vs-dark or others
+      });
+
+      // Event listener for the dropdown menu to switch languages
+      document.getElementById('languageSelect').addEventListener('change', function(event) {
+        const newLanguage = event.target.value;
+        const model = editorInstance.getModel();
+
+        // Switch the language of the editor
+        monaco.editor.setModelLanguage(model, newLanguage);
+      });
+
+      document.getElementById('codeForm').addEventListener('submit', function(event) {
+        // フォーム送信前にエディターの内容を隠しフィールドに設定
+        document.getElementById('body').value = editorInstance.getValue();
+      });
+
+    });
+  </script>
 </form>

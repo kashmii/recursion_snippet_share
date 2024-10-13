@@ -44,7 +44,7 @@ class HTMLRenderer implements HTTPRenderer
 
     // バッファの内容を取得し、バッファをクリアします。
     // 取得した内容にヘッダーとフッターを追加して返します。
-    return $this->getHeader() . ob_get_clean() . $this->getFooter();
+    return $this->getHeader() . ob_get_clean();
   }
 
   private function getHeader(): string
