@@ -70,17 +70,6 @@ class SnippetController
       error_log($e->getMessage());
       echo "Error: " . $e->getMessage();
     }
-
-    if ($success) {
-      $_SESSION['snippet_token'] = $token;
-
-      header('Location: /');
-      // exit: セッションデータが正しく保存するために必要だった
-      exit;
-    } else {
-      $_SESSION['error_message'] = "Error: Failed to save the snippet.";
-      exit;
-    }
   }
 
   private function saveToDatabase(Snippet $snippet): bool
