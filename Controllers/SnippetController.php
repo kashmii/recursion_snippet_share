@@ -6,6 +6,8 @@ namespace Controllers;
 use Models\Snippet;
 use Database\MySQLWrapper;
 
+session_start();
+
 class SnippetController
 {
   public function list()
@@ -49,7 +51,11 @@ class SnippetController
     $success = $this->saveToDatabase($snippet);
 
     if ($success) {
+      $_SESSION['snippet_token'] = $token;
+
       header('Location: /');
+      // exit: セッションデータが正しく保存するために必要だった
+      exit;
     } else {
       echo "Error: Failed to save the snippet.";
     }

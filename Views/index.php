@@ -1,5 +1,7 @@
 <?php
 
+session_start();
+
 $languageOptions = [
   'c',
   'cpp',
@@ -71,8 +73,28 @@ $expirationOptions = [
         <button type="submit" class="submit-button">作成</button>
       </div>
     </div>
+  </form>
 </div>
 
+<?php if (isset($_SESSION['snippet_token'])) : ?>
+  <section id="modalArea" class="modalArea">
+    <div id="modalBg" class="modalBg"></div>
+    <div class="modalWrapper">
+      <div class="modalContents">
+        <!-- 中身は後で変更 -->
+        <h1>Here are modal contents!</h1>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+        <p>Created URL: <a href="<?= htmlspecialchars($$_SESSION['snippet_token'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($_SESSION['snippet_token'], ENT_QUOTES, 'UTF-8') ?></a></p>
+      </div>
+      <div id="closeModal" class="closeModal">
+        ×
+      </div>
+    </div>
+  </section>
 
+<?php
+  unset($_SESSION['snippet_token']);
+endif;
+?>
 
 <script src="/js/script.js"></script>

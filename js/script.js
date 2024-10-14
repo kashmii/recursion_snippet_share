@@ -31,4 +31,23 @@ require(['vs/editor/editor.main'], function () {
       // フォーム送信前にエディターの内容を隠しフィールドに設定
       document.getElementById('body').value = editorInstance.getValue();
     });
+
+  // ================
+  // モーダルの処理
+  // ================
+
+  const modal = document.getElementById('modalArea');
+
+  if (modal) {
+    const closeModalBtn = document.getElementById('closeModal');
+    const modalBg = document.getElementById('modalBg');
+
+    closeModalBtn.addEventListener('click', function () {
+      modal.style.display = 'none';
+    });
+
+    modalBg.addEventListener('click', function () {
+      modal.style.display = 'none';
+    });
+  }
 });
