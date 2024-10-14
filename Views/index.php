@@ -1,5 +1,12 @@
 <?php
 
+session_start();
+
+$showModal = isset($_SESSION['snippet_token']);
+$createdUrl = $showModal ? BASE_URL . '/' . $_SESSION['snippet_token'] : '';
+
+$errorMessage = $_SESSION['error_message'] ?? null;
+
 $languageOptions = [
   'c',
   'cpp',
@@ -33,6 +40,16 @@ $expirationOptions = [
 
 <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.32.1/min/vs/loader.js"></script>
 
+<?php if (isset($errorMessage)) : ?>
+  <div class="error-message">
+    <div class="error-text-wrapper">
+      <p><?= htmlspecialchars($errorMessage, ENT_QUOTES, 'UTF-8') ?></p>
+    </div>
+  </div>
+<?php
+  unset($_SESSION['error_message']);
+endif; ?>
+
 <div class="index-container">
   <form id="codeForm" method="post" action="/submit">
     <div class="select-wrapper">
@@ -46,7 +63,7 @@ $expirationOptions = [
     </div>
 
     <div id="editor"></div>
-    <input type="hidden" id="body" name="body">
+    <input type="hidden" id="body" name="body" required>
 
     <div class="below-editor-wrapper">
       <div class="title-wrapper">
@@ -71,41 +88,32 @@ $expirationOptions = [
         <button type="submit" class="submit-button">作成</button>
       </div>
     </div>
+  </form>
 </div>
 
+<?php if ($showModal) : ?>
+  <section id="modalArea" class="modal-area">
+    <div id="modalBg" class="modal-bg"></div>
+    <div class="modal-wrapper">
+      <div class="modal-contents">
+        <p class="modal-title">code を誰かに共有しよう！</p>
 
+        <div class="url-wrapper">
+          <a href="<?= htmlspecialchars($createdUrl, ENT_QUOTES, 'UTF-8') ?>"
+            id="urlLink">
+            <?= htmlspecialchars($createdUrl, ENT_QUOTES, 'UTF-8') ?>
+          </a>
+        </div>
+        <button id="copyButton" class="copy-button">URLをコピー</button>
+        <div id="closeModal" class="close-modal">
+          ×
+        </div>
+      </div>
+  </section>
 
-<script>
-  require.config({
-    paths: {
-      'vs': 'https://cdn.jsdelivr.net/npm/monaco-editor@0.32.1/min/vs'
-    }
-  });
+<?php
+  unset($_SESSION['snippet_token']);
+endif;
+?>
 
-  let editorInstance;
-
-  require(['vs/editor/editor.main'], function() {
-    editorInstance = monaco.editor.create(document.getElementById('editor'), {
-      value: "// Type your code here...",
-      language: 'plaintext', // Choose the language syntax you need
-      theme: 'vs-light', // Set a theme, can be 'vs-light', vs-dark or others
-      automaticLayout: true
-    });
-
-    // Event listener for the dropdown menu to switch languages
-    document.getElementById('languageSelect').addEventListener('change', function(event) {
-      const newLanguage = event.target.value;
-      const model = editorInstance.getModel();
-
-      // Switch the language of the editor
-      monaco.editor.setModelLanguage(model, newLanguage);
-    });
-
-    document.getElementById('codeForm').addEventListener('submit', function(event) {
-      // フォーム送信前にエディターの内容を隠しフィールドに設定
-      document.getElementById('body').value = editorInstance.getValue();
-    });
-
-  });
-</script>
-</form>
+<script src="/js/script.js"></script>

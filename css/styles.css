@@ -16,10 +16,13 @@
 }
 
 .list-link {
+  padding: 10px 20px;
+}
+
+.list-link, .copy-button {
   margin-left: auto;
   display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px
+  font-size: 16px;
   color: #fff;
   background-color: #007bff;
   border: none;
@@ -30,13 +33,30 @@
   transition: background-color 0.3s ease;
 }
 
-.list-link:hover {
+.list-link:hover, .copy-button:hover {
   background-color: #0056b3;
 }
 
 /*        */
 /* index  */
 /*        */
+
+.error-message {
+  background: #ec3030;
+  width: 100%;
+  height: 30px;
+  margin: 0 0 20px;
+
+  .error-text-wrapper {
+    margin: 0 auto 0;
+    width: 80%;
+
+    p {
+      text-align: center;
+      font-weight: bold;
+    }
+  }
+}
 
 .index-container {
   margin: 0 auto 200px;
@@ -106,3 +126,61 @@
 .submit-button:hover {
   background-color: #4caa70;
 }
+
+/*        */
+/* modal  */
+/*        */
+
+.modal-area {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-bg {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(30,30,30,0.9);
+}
+
+.modal-title {
+  margin: 0 0 20px 0;
+}
+
+.modal-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 70%;
+  max-width: 600px;
+  padding: 30px;
+  background-color: #fff;
+}
+
+.close-modal {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  cursor: pointer;
+}
+
+.url-wrapper {
+  align-items: center;
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    margin-left: 30px;
+  }
+}
+
+/* 大多数のcss設定は上の方で list-link といっしょにやっている  */
+.copy-button {
+  margin: 20px 0 0 30px;
+  padding: 10px;
+}
+
