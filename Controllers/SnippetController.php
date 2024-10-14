@@ -5,6 +5,7 @@ namespace Controllers;
 
 use Models\Snippet;
 use Database\MySQLWrapper;
+use Helpers\ValidationHelper;
 
 session_start();
 
@@ -30,27 +31,45 @@ class SnippetController
 
   public function submit()
   {
-    if (empty($_POST['title']) || empty($_POST['body']) || empty($_POST['language'])) {
-      $_SESSION['error_message'] = "Error: Required fields (title, body or language) are missing.";
+    try {
+      if (empty($_POST['title']) || empty($_POST['body']) || empty($_POST['language'])) {
+        throw new \InvalidArgumentException("Error: Required fields are missing.");
+      }
+
+      $title = ValidationHelper::stringLength($_POST['title'], 255);
+      $body = ValidationHelper::stringLength($_POST['body'], 65535);
+      $language = $_POST['language'];
+
+      if (Snippet::validateExpirationInput($_POST['expiration']) === false) {
+        throw new \InvalidArgumentException("Error: Invalid expiration input." . $_POST['expiration']);
+      }
+
+      $expirationDateTime = $_POST['expiration'] == "" ?
+        null : $this->convertExpirationToDateTime($_POST['expiration']);
+      $token = $this->generateUniquePath($body);
+
+      $snippet = new Snippet($title, $body, $token, $language, null, $expirationDateTime);
+      $success = $this->saveToDatabase($snippet);
+
+      if ($success) {
+        $_SESSION['snippet_token'] = $token;
+        header('Location: /');
+        exit;
+      } else {
+        throw new \RuntimeException("Error: Failed to save the snippet.");
+      }
+    } catch (\InvalidArgumentException $e) {
+      $error_message = $e->getMessage();
+      error_log($error_message);
+      echo "Error: " . $error_message;
+      $_SESSION['error_message'] = $error_message;
       header('Location: /');
       exit;
+    } catch (\RuntimeException $e) {
+      // その他の例外が発生した場合の処理
+      error_log($e->getMessage());
+      echo "Error: " . $e->getMessage();
     }
-
-    if (Snippet::validateExpirationInput($_POST['expiration']) === false) {
-      $_SESSION['error_message'] = "Error: Invalid expiration input." . $_POST['expiration'];
-      header('Location: /');
-      exit;
-    }
-
-    $title = $_POST['title'];
-    $body = $_POST['body'];
-    $language = $_POST['language'];
-    $expirationDateTime = $_POST['expiration'] == "" ?
-      null : $this->convertExpirationToDateTime($_POST['expiration']);
-    $token = $this->generateUniquePath($body);
-
-    $snippet = new Snippet($title, $body, $token, $language, null, $expirationDateTime);
-    $success = $this->saveToDatabase($snippet);
 
     if ($success) {
       $_SESSION['snippet_token'] = $token;
