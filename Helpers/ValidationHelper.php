@@ -16,4 +16,17 @@ class ValidationHelper
     // 値がすべてのチェックをパスしたら、そのまま返します。
     return $value;
   }
+
+  public static function stringLength($value, int $maxLength): string
+  {
+    if (!is_string($value)) {
+      throw new \InvalidArgumentException("The provided value is not a valid string.");
+    }
+
+    if (strlen($value) > $maxLength) {
+      throw new \InvalidArgumentException("The provided string exceeds the maximum length of $maxLength characters.");
+    }
+
+    return $value;
+  }
 }
