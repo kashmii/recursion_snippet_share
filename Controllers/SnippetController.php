@@ -30,14 +30,16 @@ class SnippetController
 
   public function submit()
   {
-    if (!isset($_POST['title']) || !isset($_POST['body']) || !isset($_POST['language'])) {
-      echo "Error: Required fields are missing.";
-      return;
+    if (empty($_POST['title']) || empty($_POST['body']) || empty($_POST['language'])) {
+      $_SESSION['error_message'] = "Error: Required fields (title, body or language) are missing.";
+      header('Location: /');
+      exit;
     }
 
     if (Snippet::validateExpirationInput($_POST['expiration']) === false) {
-      echo "Error: Invalid expiration input." . $_POST['expiration'];
-      return;
+      $_SESSION['error_message'] = "Error: Invalid expiration input." . $_POST['expiration'];
+      header('Location: /');
+      exit;
     }
 
     $title = $_POST['title'];
@@ -57,7 +59,8 @@ class SnippetController
       // exit: セッションデータが正しく保存するために必要だった
       exit;
     } else {
-      echo "Error: Failed to save the snippet.";
+      $_SESSION['error_message'] = "Error: Failed to save the snippet.";
+      exit;
     }
   }
 
