@@ -49,5 +49,22 @@ require(['vs/editor/editor.main'], function () {
     modalBg.addEventListener('click', function () {
       modal.style.display = 'none';
     });
+
+    document
+      .getElementById('copyButton')
+      .addEventListener('click', function () {
+        // コピーするテキストを取得
+        const urlText = document.getElementById('urlLink').textContent;
+
+        // クリップボードにコピー
+        navigator.clipboard
+          .writeText(urlText)
+          .then(function () {
+            alert('URLがクリップボードにコピーされました');
+          })
+          .catch(function (err) {
+            console.error('クリップボードへのコピーに失敗しました: ', err);
+          });
+      });
   }
 });

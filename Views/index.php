@@ -2,6 +2,12 @@
 
 session_start();
 
+$showModal = isset($_SESSION['snippet_token']);
+
+if ($showModal) {
+  $createdUrl = BASE_URL . '/' . $_SESSION['snippet_token'];
+}
+
 $languageOptions = [
   'c',
   'cpp',
@@ -76,20 +82,24 @@ $expirationOptions = [
   </form>
 </div>
 
-<?php if (isset($_SESSION['snippet_token'])) : ?>
-  <section id="modalArea" class="modalArea">
-    <div id="modalBg" class="modalBg"></div>
-    <div class="modalWrapper">
-      <div class="modalContents">
-        <!-- 中身は後で変更 -->
-        <h1>Here are modal contents!</h1>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-        <p>Created URL: <a href="<?= htmlspecialchars($$_SESSION['snippet_token'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($_SESSION['snippet_token'], ENT_QUOTES, 'UTF-8') ?></a></p>
+<?php if ($showModal) : ?>
+  <section id="modalArea" class="modal-area">
+    <div id="modalBg" class="modal-bg"></div>
+    <div class="modal-wrapper">
+      <div class="modal-contents">
+        <p class="modal-title">code を誰かに共有しよう！</p>
+
+        <div class="url-wrapper">
+          <a href="<?= htmlspecialchars($createdUrl, ENT_QUOTES, 'UTF-8') ?>"
+            id="urlLink">
+            <?= htmlspecialchars($createdUrl, ENT_QUOTES, 'UTF-8') ?>
+          </a>
+        </div>
+        <button id="copyButton" class="copy-button">URLをコピー</button>
+        <div id="closeModal" class="close-modal">
+          ×
+        </div>
       </div>
-      <div id="closeModal" class="closeModal">
-        ×
-      </div>
-    </div>
   </section>
 
 <?php
