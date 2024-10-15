@@ -108,7 +108,7 @@ class SnippetController
   {
     $db = new MySQLWrapper();
     $snippets = $db->prepareAndFetchAll(
-      "SELECT * FROM snippets WHERE expiration > NOW() ORDER BY created_at DESC LIMIT 100",
+      "SELECT * FROM snippets WHERE (expiration > NOW() OR expiration IS NULL) ORDER BY created_at DESC LIMIT 100",
       '',
       []
     );
