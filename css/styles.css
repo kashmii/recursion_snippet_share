@@ -7,6 +7,10 @@
   width: 80%;
 }
 
+.top-link {
+  text-decoration: none;
+}
+
 .site-title {
   color: #ec3030;
 }
