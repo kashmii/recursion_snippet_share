@@ -2,7 +2,6 @@
 
 require_once __DIR__ . '/../config.php';
 
-// use Helpers\ValidationHelper;
 use Response\HTTPRenderer;
 use Response\Render\HTMLRenderer;
 use Controllers\SnippetController;
@@ -11,13 +10,10 @@ return [
   '/' => function (): HTTPRenderer {
     return new HTMLRenderer('index');
   },
-  '/show' => function (): HTTPRenderer {
-    return new HTMLRenderer('show');
-  },
   '/list' => function (): HTTPRenderer {
     $controller = new SnippetController();
-    $controller->list();
-    return new HTMLRenderer('list');
+    $snippets = $controller->list();
+    return new HTMLRenderer('list', ['snippets' => $snippets]);
   },
   '/submit' => function () {
     $controller = new SnippetController();

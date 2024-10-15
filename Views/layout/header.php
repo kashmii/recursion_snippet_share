@@ -9,7 +9,9 @@
 </head>
 
 <div class="header-container">
-  <h1 class="site-title">Code Sharing</h1>
+  <a href="/" class="top-link">
+    <h1 class="site-title">Code Sharing</h1>
+  </a>
   <div class="link-wrapper">
     <a href="/list" class="list-link">公開テキスト一覧</a>
   </div>

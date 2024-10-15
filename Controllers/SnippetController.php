@@ -1,5 +1,4 @@
 <?php
-// controllers/SnippetController.php
 
 namespace Controllers;
 
@@ -13,14 +12,8 @@ class SnippetController
 {
   public function list()
   {
-    // Snippet一覧のデータ取得処理（モデルからデータを取得）
-    require __DIR__ . '/../Views/list.php';
-  }
-
-  public function create()
-  {
-    // Snippet作成画面の表示処理
-    require __DIR__ . '/../views/create.php';
+    $snippets = $this->fetchValidSnippets();
+    return $snippets;
   }
 
   public function show($token)
@@ -70,17 +63,6 @@ class SnippetController
       error_log($e->getMessage());
       echo "Error: " . $e->getMessage();
     }
-
-    if ($success) {
-      $_SESSION['snippet_token'] = $token;
-
-      header('Location: /');
-      // exit: セッションデータが正しく保存するために必要だった
-      exit;
-    } else {
-      $_SESSION['error_message'] = "Error: Failed to save the snippet.";
-      exit;
-    }
   }
 
   private function saveToDatabase(Snippet $snippet): bool
@@ -120,5 +102,17 @@ class SnippetController
     $datetime = new \DateTime();
     $datetime->modify($expiration);
     return $datetime;
+  }
+
+  private function fetchValidSnippets()
+  {
+    $db = new MySQLWrapper();
+    $snippets = $db->prepareAndFetchAll(
+      "SELECT * FROM snippets WHERE (expiration > NOW() OR expiration IS NULL) ORDER BY created_at DESC LIMIT 100",
+      '',
+      []
+    );
+    $db->close();
+    return $snippets;
   }
 }
